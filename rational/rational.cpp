@@ -14,6 +14,15 @@ Rat::Rat(int nom, int denom) {
     int _pgcd = pgcd(nom, denom);
     this->nom = nom / _pgcd;
     this->denom = denom / _pgcd;
+
+    if(this->nom < 0 && this->denom < 0){
+        this->nom = -this->nom;
+        this->denom = -this->denom;
+    }
+    if(this->nom >= 0 && this->denom < 0){
+        this->nom = -this->nom;
+        this->denom = -this->denom;
+    }
 }
 
 Rat::Rat(int num) {
@@ -33,6 +42,14 @@ void Rat::set_number(int nom, int denom){
 
 // operator overloadings: 
 
+bool operator==(Rat rat1, Rat rat2){
+    return (rat1.nom() == rat2.nom() && rat1.denom() == rat2.denom());
+}
+
+bool operator!=(Rat rat1, Rat rat2){
+    return !(rat1 == rat2);
+}
+
 bool operator==(Rat rat, int num){
     if(rat.get_denom() == 1)
         return rat.get_nom() == num;
@@ -42,6 +59,26 @@ bool operator==(Rat rat, int num){
 
 bool operator==(Rat rat, double num){
     return (rat.get_nom() / rat.get_denom()) == num;
+}
+
+bool operator==(int num, Rat rat){
+    return rat == num;
+}
+bool operator==(double num, Rat rat){
+    return rat == num;
+}
+
+bool operator!=(Rat rat, int num){
+    return !(rat == num);
+}
+bool operator!=(int num, Rat rat){
+    return !(num == rat);
+}
+bool operator!=(double num, Rat rat){
+    return !(num == rat);
+}
+bool operator!=(Rat rat, double num){
+    return !(rat == num);
 }
 
 Rat operator*(Rat n1, Rat n2){
@@ -76,9 +113,36 @@ Rat operator/(Rat n1, Rat n2){
 }
 
 Rat operator+(Rat n1, Rat n2){
-    
+    int denom = n1.get_denom();
+    n1 = n1 * n2.get_denom();
+    n2 = n2 * denom;
+    return Rat(n1.get_nom() + n2.get_nom(), n1.get_denom());
 }
-// Rat operator-(Rat n1, Rat n2);
+Rat operator+(Rat n1, int num){
+    Rat n2 = Rat(num);
+    return n1 + n2;
+}
+Rat operator+(int num, Rat n1){
+    Rat n2 = Rat(num);
+    return n1 + n2;
+}
+
+Rat operator-(Rat n1){
+    return Rat(-n1.get_nom(), n1.get_denom());
+}
+
+Rat operator-(Rat n1, Rat n2){
+    Rat new_r = -n2;
+    return n1 + new_r;
+}
+
+Rat operator-(Rat n1, int num){
+    return n1 + (-num);
+}
+
+Rat operator-(int num, Rat n1){
+    return num + (-n1);
+}
 
 ostream& operator<<(ostream& out, const Rat& rat){
     if(rat.get_denom() == 1){

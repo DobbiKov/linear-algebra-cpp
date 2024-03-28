@@ -15,8 +15,17 @@ public:
 
     int get_denom() const { return this->denom; }
     void set_number(int nom, int denom);
+    friend bool operator==(Rat rat1, Rat rat2);
     friend bool operator==(Rat rat, int num);
+    friend bool operator==(int num, Rat rat);
+    friend bool operator==(double num, Rat rat);
     friend bool operator==(Rat rat, double num);
+
+    friend bool operator!=(Rat rat1, Rat rat2);
+    friend bool operator!=(Rat rat, int num);
+    friend bool operator!=(int num, Rat rat);
+    friend bool operator!=(double num, Rat rat);
+    friend bool operator!=(Rat rat, double num);
     friend ostream& operator<<(ostream& out, const Rat& rat);
 private: 
     int nom;
@@ -32,6 +41,13 @@ Rat operator/(Rat n1, int num);
 Rat operator/(int num, Rat n1);
 
 Rat operator+(Rat n1, Rat n2);
+Rat operator+(Rat n1, int num);
+Rat operator+(int num, Rat n1);
+
+Rat operator-(Rat n1);
+
 Rat operator-(Rat n1, Rat n2);
+Rat operator-(Rat n1, int num);
+Rat operator-(int num, Rat n1);
 
 #endif
