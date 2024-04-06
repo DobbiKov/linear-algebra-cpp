@@ -8,10 +8,27 @@
 using namespace std;
 
 Rat::Rat(int nom, int denom) {
+  this->set_number(nom, denom);
+}
+
+Rat::Rat(int num) {
+  this->set_number(num, 1);
+}
+
+void Rat::set_number(int nom, int denom) {
   if (denom == 0) {
     throw invalid_argument("The denominator can't be 0");
   }
   int _pgcd = pgcd(nom, denom);
+  if(nom == denom){ //if nom and denom are equals this number is 1
+    _pgcd = nom;
+  }
+
+  if(nom == 0){ //if nom is 0 then denom has to be equal to 1
+    _pgcd = denom;
+  }
+
+
   this->nom = nom / _pgcd;
   this->denom = denom / _pgcd;
 
@@ -23,21 +40,6 @@ Rat::Rat(int nom, int denom) {
     this->nom = -this->nom;
     this->denom = -this->denom;
   }
-}
-
-Rat::Rat(int num) {
-  this->nom = num;
-  this->denom = 1;
-}
-
-void Rat::set_number(int nom, int denom) {
-  if (denom == 0) {
-    throw invalid_argument("The denominator can't be 0");
-  }
-
-  int _pgcd = pgcd(nom, denom);
-  this->nom = nom / _pgcd;
-  this->denom = denom / _pgcd;
 }
 
 // operator overloadings:
@@ -121,10 +123,9 @@ Rat operator/(Rat n1, Rat n2) {
 }
 
 Rat operator+(Rat n1, Rat n2) {
-  int denom = n1.get_denom();
-  n1 = n1 * n2.get_denom();
-  n2 = n2 * denom;
-  return Rat(n1.get_nom() + n2.get_nom(), n1.get_denom());
+  int nom1 = n1.get_nom() * n2.get_denom();
+  int nom2 = n2.get_nom() * n1.get_denom();
+  return Rat(nom1 + nom2, n1.get_denom() * n2.get_denom());
 }
 Rat operator+(Rat n1, int num) {
   Rat n2 = Rat(num);
